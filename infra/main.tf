@@ -9,10 +9,34 @@ terraform {
     }
     hcp = {
       source = "hashicorp/hcp"
-      version = "~=0.91.0
+      version = "~>0.91.0"
     }
   }
 
-  required_version = ">= 0.14"
+  cloud {
+    organization = "timkrebs9"
+    
+    workspaces {
+      name = "llm-chat-api"
+    }
+  }
+
+  #cloud { 
+  #  organization = "timkrebs9" 
+  #  workspaces { 
+  #    name = "llm-chat-api" 
+  #  } 
+  #}
+#
+  #required_version = ">= 0.14"
 }
 
+#provider "hcp" {
+#  # Configuration using environment variables
+#  # HCP_CLIENT_ID and HCP_CLIENT_SECRET should be set in Terraform Cloud workspace
+#}
+
+provider "azurerm" {
+  features {}
+  skip_provider_registration = true
+}
