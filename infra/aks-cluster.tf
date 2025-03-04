@@ -3,8 +3,8 @@
 
 resource "random_pet" "prefix" {}
 
-provider "azurerm" {
-  features {}
+data "hcp_vault_secrets_app" "aks_sp" {
+  app_name = "aks-sp-secrets"
 }
 
 resource "azurerm_resource_group" "default" {
@@ -12,16 +12,8 @@ resource "azurerm_resource_group" "default" {
   location = "West US 2"
 
   tags = {
-    environment = "Demo"
+    environment = "Dev"
   }
-}
-
-data "hcp_vault_secrets_appid" "default" {
-  app_id = "appId"
-}
-
-data "hcp_vault_secrets_password" "default" {
-  password = "password"
 }
 
 resource "azurerm_kubernetes_cluster" "default" {
@@ -29,7 +21,7 @@ resource "azurerm_kubernetes_cluster" "default" {
   location            = azurerm_resource_group.default.location
   resource_group_name = azurerm_resource_group.default.name
   dns_prefix          = "${random_pet.prefix.id}-k8s"
-  kubernetes_version  = "1.26.3"
+  kubernetes_version  = "1.30.9"
 
   default_node_pool {
     name            = "default"
@@ -39,13 +31,13 @@ resource "azurerm_kubernetes_cluster" "default" {
   }
 
   service_principal {
-    client_id     = data.hcp_vault_secrets_appid.default.app_id
-    client_secret = data.hcp_vault_secrets_password.default.password
+    client_id     = data.hcp_vault_secrets_app.aks_sp.secrets["appId"]
+    client_secret = data.hcp_vault_secrets_app.aks_sp.secrets["password"]
   }
 
   role_based_access_control_enabled = true
 
   tags = {
-    environment = "Demo"
+    environment = "Dev"
   }
 }
