@@ -20,15 +20,6 @@ terraform {
       name = "llm-chat-api"
     }
   }
-
-  #cloud { 
-  #  organization = "timkrebs9" 
-  #  workspaces { 
-  #    name = "llm-chat-api" 
-  #  } 
-  #}
-#
-  #required_version = ">= 0.14"
 }
 
 #provider "hcp" {
@@ -36,7 +27,16 @@ terraform {
 #  # HCP_CLIENT_ID and HCP_CLIENT_SECRET should be set in Terraform Cloud workspace
 #}
 
+data "hcp_vault_secrets_app" "azure_sp" {
+  app_name = "azure-sp-secrets"
+}
+
 provider "azurerm" {
   features {}
   skip_provider_registration = true
+
+  subscription_id   = data.hcp_vault_secrets_app.azure_sp.secrets["subscription_id"]
+  tenant_id         = data.hcp_vault_secrets_app.azure_sp.secrets["tenant_id"]
+  client_id         = data.hcp_vault_secrets_app.azure_sp.secrets["client_id"]
+  client_secret     = data.hcp_vault_secrets_app.azure_sp.secrets["client_secret"]
 }
