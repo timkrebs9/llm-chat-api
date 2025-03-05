@@ -45,7 +45,7 @@ env:
   CLUSTER_RESOURCE_GROUP: crisp-crayfish-rg
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DEPLOYMENT_MANIFEST_PATH: ./manifests
-  DOCKER_FILE: ./app/Dockerfile
+  DOCKER_FILE: ./Dockerfile
   BUILD_CONTEXT_PATH: ./
   NAMESPACE: namespace-workflow-1741179447214
   ENABLENAMESPACECREATION: false
