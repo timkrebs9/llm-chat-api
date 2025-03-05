@@ -7,7 +7,7 @@ resource "azurerm_postgresql_flexible_server" "device_registry_db" {
   name                   = "device-registry-db"
   resource_group_name    = azurerm_resource_group.default.name
   location               = azurerm_resource_group.default.location
-  sku_name               = "GP_Standard_D2s_v3"
+  sku_name               = "GP_Standard_D2ads_v5"
   storage_mb             = 32768
   backup_retention_days  = 7
   geo_redundant_backup_enabled = false
