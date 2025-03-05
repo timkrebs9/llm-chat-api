@@ -13,17 +13,132 @@ This is a simple FastAPI application that can be deployed to Azure Kubernetes Se
 ## Project Structure
 
 ```
-.
-├── app.py                 # FastAPI application
-├── requirements.txt       # Python dependencies
-├── Dockerfile             # For containerizing the application
-├── k8s/                   # Kubernetes manifests
-│   ├── deployment.yaml    # Deployment configuration
-│   └── service.yaml       # Service configuration
-├── .github/workflows/     # GitHub Actions workflows
-│   └── deploy-to-aks.yml  # Deployment workflow
-├── infra/                 # Terraform infrastructure code
-└── README.md              # This file
+monitoring-control-platform/
+├── infra/                 # Terraform-Konfigurationen für die Infrastruktur (AKS, ACR, etc.)
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── aks-cluster.tf
+│   ├── acr.tf
+│   ├── terraform.tfstate
+│   ├── terraform.tfstate.backup
+│   └── .terraform.lock.hcl
+│
+├── manifests/             # Kubernetes-Manifeste für Deployment & Services
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   ├── configmap.yaml
+│   ├── ingress.yaml
+│   ├── secret.yaml
+│   ├── namespace.yaml
+│   ├── horizontal-autoscaler.yaml
+│   ├── service-mesh.yaml
+│   └── monitoring-stack.yaml
+│
+├── services/              # Microservices für die Plattform
+│   ├── api-gateway/       # API Gateway (FastAPI)
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── config.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── device-registry/   # Service zur Verwaltung von IoT-Geräten
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── database.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── telemetry/         # Service für die Verarbeitung und Speicherung von Sensordaten
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── database.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── rules-engine/      # Logik für regelbasierte Automatisierungen
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── rules_engine.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── notification/      # Benachrichtigungsservice
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── notification.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── ml-service/        # Anomalie-Erkennung mit ML
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── ml_model.py
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│   │
+│   ├── dashboard/         # Echtzeit-Visualisierung
+│   │   ├── app.py
+│   │   ├── requirements.txt
+│   │   ├── Dockerfile
+│   │   ├── routers/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── tests/
+│
+├── collector/             # Windows-Collector für Datenerfassung
+│   ├── main.py            # Hauptlogik für das Datensammeln und Senden
+│   ├── config.ini         # Konfigurationsdatei
+│   ├── requirements.txt
+│   ├── utils.py           # Hilfsfunktionen
+│   ├── sender.py          # Logik für das Senden der Daten an das Backend
+│   ├── installer/         # Windows-Installer
+│   │   ├── setup.nsi      # NSIS-Skript für die Installation
+│   │   ├── build.bat      # Skript für das Erstellen des Installers
+│   │   └── icons/         # Icons für den Installer
+│
+├── docs/                  # Dokumentation
+│   ├── architecture.md    # Architektur-Übersicht
+│   ├── api.md            # API-Dokumentation
+│   ├── setup.md          # Anleitungen für Setup & Deployment
+│   └── collector.md      # Dokumentation für den Edge Collector
+│
+├── .github/               # GitHub Actions für CI/CD
+│   ├── workflows/
+│   │   ├── deploy-aks.yml
+│   │   ├── lint-test.yml
+│   │   └── build-collector.yml
+│
+├── .gitignore             # Ignorierte Dateien für Git
+├── README.md              # Hauptbeschreibung des Projekts
+└── LICENSE                # Lizenzinformationen
+
 ```
 
 ## Local Development
