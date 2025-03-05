@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dev-deployment-config
+  namespace: namespace-workflow-1741179447214
+  labels:
+    app.kubernetes.io/name: dev-deployment
+    kubernetes.azure.com/generator: devhub
+data:
